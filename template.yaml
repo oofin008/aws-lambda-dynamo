@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: My Serverless Application
+
+Resources:
+  MyFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: my_function/
+      Handler: app.lambda_handler
+      Runtime: nodejs14.x
+      MemorySize: 128
+      Timeout: 10
+      Events:
+        MyApi:
+          Type: Api
+          Properties:
+            Path: /myapi
+            Method: GET
+
+  MyTable:
+    Type: 'AWS::Serverless::SimpleTable'
+    Properties:
+      PrimaryKey:
+        Name: myId
+        Type: String
+
+Outputs:
+  MyFunctionArn:
+    Value: !GetAtt MyFunction.Arn
+    Export:
+      Name: MyFunctionArn
